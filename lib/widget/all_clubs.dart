@@ -16,15 +16,14 @@ class AllClubs extends StatefulWidget {
 class _AllClubsState extends State<AllClubs> {
   Position? _currentUserPosition;
   double? distanceMeter = 0.0;
-  ClubData clubData = ClubData();
 
   Future _getDistance() async {
     _currentUserPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
-    for (int counter = 0; counter < clubData.allClubsData.length; counter++) {
-      double clubLat = clubData.allClubsData[counter]['lat'];
-      double clubLong = clubData.allClubsData[counter]['long'];
+    for (int counter = 0; counter < allClubsData.length; counter++) {
+      double clubLat = allClubsData[counter].lat;
+      double clubLong = allClubsData[counter].long;
 
       distanceMeter = await Geolocator.distanceBetween(
         _currentUserPosition!.latitude,
@@ -34,14 +33,10 @@ class _AllClubsState extends State<AllClubs> {
       );
 
       var distance = distanceMeter?.round().toDouble();
-      clubData.allClubsData[counter]['distance'] = (distance! / 1000);
+      allClubsData[counter].distance = (distance! / 1000);
       setState(() {});
     }
   }
-
-  //void clubSelect(BuildContext context){
-  // Navigator.of(context).push(MaterialPageRoute(builder: BuildContext))
-  //}
 
   @override
   void initState() {
@@ -77,7 +72,7 @@ class _AllClubsState extends State<AllClubs> {
             borderRadius: BorderRadius.circular(30),
           ),
           child: GridView.builder(
-            itemCount: clubData.allClubsData.length,
+            itemCount: allClubsData.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 200,
               childAspectRatio: 3 / 2,
@@ -90,7 +85,7 @@ class _AllClubsState extends State<AllClubs> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => ClubDetails(
-                        clubDetail: clubData.allClubsData[index],
+                        club: allClubsData[index],
                       ),
                     ),
                   );
@@ -112,7 +107,7 @@ class _AllClubsState extends State<AllClubs> {
                             topRight: Radius.circular(15),
                           ),
                           child: Image.network(
-                            clubData.allClubsData[index]['image'],
+                            allClubsData[index].image,
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -121,7 +116,7 @@ class _AllClubsState extends State<AllClubs> {
                         width: width,
                         color: Colors.indigo,
                         child: Text(
-                          clubData.allClubsData[index]['name'],
+                          allClubsData[index].name,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -143,7 +138,7 @@ class _AllClubsState extends State<AllClubs> {
                           children: [
                             const Icon(Icons.location_on),
                             Text(
-                              '${clubData.allClubsData[index]['distance'].round()} Km',
+                              '${allClubsData[index].distance.round()} Km',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

@@ -3,7 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 
-import 'package:test2/data/club_data.dart';
 import '../data/marker_data.dart';
 
 class DynamicMap extends StatefulWidget {
@@ -14,12 +13,11 @@ class DynamicMap extends StatefulWidget {
 }
 
 class _DynamicMap extends State<DynamicMap> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
   Position? _mapUserPosition;
   late double mapInitialLat;
   late double mapInitialLong;
   double? distanceMeter = 0.0;
-  ClubData clubData = ClubData();
   List<Marker> locations = markers;
 
   Future _getLocation() async {
